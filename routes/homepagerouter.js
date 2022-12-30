@@ -1,13 +1,14 @@
-const path = require('path')
+
 
 const express = require('express');
 
-const rootDir = require('../util/path')
+const productData = require('../util/products')
 
 const router = express.Router();
 
-router.get('/shop',(req,res)=>{
-res.sendFile(path.join(rootDir,'views','homePage.html'));
+router.get('/',(req,res)=>{
+const sendDataTOFront = productData.products;
+res.send(sendDataTOFront)
 })
 
 module.exports = router;
