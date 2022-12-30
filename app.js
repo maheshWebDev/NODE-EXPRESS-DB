@@ -1,55 +1,36 @@
-const http = require('http');
+const path = require('path')
 
-const fs = require('fs')
+const express = require('express');
 
-const server = http.createServer((req,res)=>{
-    let url = req.url;
-    // if(url == '/'){
-    //     res.writeHead(200,{'content-type' : 'text/html'})
-    //    return res.end(`<form action="/data" method="POST">
-    //    <label for="fname">First name:</label><br>
-    //    <input type="text" id="fname" name="fname" value="John"><br>
-    //    <input type="submit" value="Submit">
-    //  </form>`);
-    // }
+const rootDir = require('./util/path')
 
-//  parsing incoming data and storing it in a file
+const app = express();
 
-//     if(url == '/data'){
-//         let body = [];
-//         req.on('data',(chunks)=>{
-//            body.push(chunks)
-//         });
-//         req.on('end',()=>{
-//           const stringdata = Buffer.concat(body).toString();
-//           const userName = stringdata.split('=')[1]
-//           fs.writeFileSync('userdata.txt',userName);
-//         })
-       
-//         res.writeHead(200,{'content-type' : 'text/html'})
-//  return res.end('<h1>data recived</h1>');
-//     }
-//     if(url=='/node'){
-//         res.writeHead(200,{'content-type' : 'text/html'})
-//         return res.end('<h1>node</h1>');
-//     }else{
-//         res.writeHead(404,{'content-type' : 'text/html'})
-//         return res.end('<h1>not fount</h1>');
-//     }
-   
-       if(url == '/'){
-      res.writeHead(200,{'content-type' : 'text/html'})
-      const loginPage = fs.readFileSync(__dirname + '/index.html')
-      res.end(loginPage)
+const homeRoute = require('./routes/homepagerouter')
 
+const adminRoute = require('./routes/adminrouter')
 
+// globle middelware
 
-}
+app.use(express.urlencoded({extended:false}));
+
+app.use(express.static(path.join(rootDir,'public')))
+
+// route middleware
+
+app.use(homeRoute)
+
+app.use(adminRoute)
+
+app.get('/public/css/main.css',(req,res)=>{  
+    res.sendFile(path.join(rootDir,'public','css','main.css'))
 })
 
-server.listen(3000,()=>{
-    console.log("server is running...")
+app.use((req,res)=>{
+    res.sendFile(path.join(rootDir,'views','404.html'))
 })
 
 
-
+app.listen(3000,()=>{
+    console.log("server is running....!")
+})
