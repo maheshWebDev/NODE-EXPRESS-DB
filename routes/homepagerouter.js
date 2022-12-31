@@ -2,13 +2,10 @@
 
 const express = require('express');
 
-const productData = require('../util/products')
+const homeController = require('../controller/homepageController')
 
 const router = express.Router();
 
-router.get('/',(req,res)=>{
-const sendDataTOFront = productData.products;
-res.send(sendDataTOFront)
-})
+router.get('/',homeController.getHomePage)
 
 module.exports = router;

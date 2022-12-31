@@ -2,16 +2,10 @@
 
 const express = require('express');
 
-const productData = require('../util/products')
+const adminController = require('../controller/admincontroller')
 
 const router = express.Router();
 
-router.post('/add-product',(req,res)=>{
-  const ele = req.body.ele;
-  console.log(ele)
-  productData.addProduct(ele);
-  console.log(productData)
-  res.sendStatus(200)
-})
+router.post('/add-product',adminController.addProduct)
 
 module.exports = router;
