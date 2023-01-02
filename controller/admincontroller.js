@@ -1,10 +1,14 @@
 
-const productData = require('../model/products');
+const product = require('../model/productModel');
 
 module.exports.addProduct = (req,res)=>{
-    const ele = req.body.ele;
-    console.log(ele)
-    productData.addProduct(ele);
-    console.log(productData)
-    res.sendStatus(200)
-  }
+    let obj = {
+      title : req.body.title,
+      price : req.body.price,
+      imgURL : req.body.imgURL
+    }
+req.user.createProduct(obj)
+   .then(()=>{res.sendStatus(200)})
+   .catch((err)=>{})
+    
+  } 
